@@ -9,80 +9,73 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Inter', sans-serif; background: #0a0a0a; min-height: 100vh; color: #fff; }
 
-  /* HEADER */
-  .hero { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a0a 50%, #0a1a0a 100%); border-bottom: 3px solid #c9a227; padding: 28px 20px 20px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,162,39,0.12) 0%, transparent 70%); }
+  .hero { background: linear-gradient(135deg, #0a0505 0%, #1a0808 50%, #0a0505 100%); border-bottom: 3px solid #df5928; padding: 28px 20px 20px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(223,89,40,0.15) 0%, transparent 70%); }
   .hero-inner { position: relative; z-index: 1; }
-  .hero-eyebrow { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 4px; color: #c9a227; text-transform: uppercase; margin-bottom: 8px; }
-  .hero-title { font-family: 'Oswald', sans-serif; font-size: clamp(36px, 8vw, 64px); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; line-height: 1; color: #fff; text-shadow: 0 0 40px rgba(201,162,39,0.3); margin-bottom: 6px; }
-  .hero-title span { color: #c9a227; }
-  .hero-sub { font-size: 13px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+  .hero-eyebrow { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 4px; color: #df5928; text-transform: uppercase; margin-bottom: 8px; }
+
+  /* BASKETBALL HOOP SVG */
+  .hoop-wrap { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 8px; }
+  .hoop-svg { width: 56px; height: 56px; flex-shrink: 0; }
+
+  .hero-title { font-family: 'Oswald', sans-serif; font-size: clamp(36px, 8vw, 64px); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; line-height: 1; color: #fff; text-shadow: 0 0 40px rgba(223,89,40,0.4); }
+  .hero-title span { background: linear-gradient(90deg, #df5928, #822924); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { font-size: 13px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 8px; margin-bottom: 16px; }
   .hero-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
   .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; }
-  .badge.live { border-color: rgba(90,200,90,0.4); color: #5ac85a; }
-  .live-dot { width: 7px; height: 7px; background: #5ac85a; border-radius: 50%; animation: pulse 1.5s infinite; }
+  .badge.live { border-color: rgba(223,89,40,0.5); color: #df5928; }
+  .live-dot { width: 7px; height: 7px; background: #df5928; border-radius: 50%; animation: pulse 1.5s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)} }
-  .day-pill { background: #c9a227; color: #000; font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; padding: 6px 20px; border-radius: 4px; text-transform: uppercase; }
+  .day-pill { background: linear-gradient(90deg, #df5928, #822924); color: #fff; font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; padding: 6px 20px; border-radius: 4px; text-transform: uppercase; }
 
-  /* TICKER */
-  .ticker { background: #c9a227; padding: 7px 0; overflow: hidden; white-space: nowrap; }
-  .ticker-inner { display: inline-block; animation: ticker 25s linear infinite; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; color: #000; letter-spacing: 1px; text-transform: uppercase; }
+  .ticker { background: linear-gradient(90deg, #822924, #df5928, #822924); padding: 7px 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-block; animation: ticker 60s linear infinite; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 1px; text-transform: uppercase; }
   @keyframes ticker { from{transform:translateX(100vw)} to{transform:translateX(-100%)} }
-  .ticker-inner { animation-duration: 60s !important; }
 
-  /* MAIN */
   .main { max-width: 760px; margin: 0 auto; padding: 24px 16px; }
 
-  /* SECTION HEADER */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat { background: #111; border: 1px solid #1e1e1e; border-top: 2px solid #df5928; border-radius: 4px; padding: 16px; text-align: center; }
+  .stat-val { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; background: linear-gradient(90deg, #df5928, #822924); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .stat-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
   .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
   .section-head h2 { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
   .section-line { flex: 1; height: 1px; background: linear-gradient(90deg, #333, transparent); }
-  .section-tag { font-size: 11px; color: #c9a227; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .section-tag { font-size: 11px; color: #df5928; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
-  /* LEADERBOARD */
-  .lb-wrap { background: #111; border: 1px solid #222; border-radius: 4px; overflow: hidden; margin-bottom: 28px; }
-  .lb-head { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 10px 16px; background: #161616; border-bottom: 1px solid #2a2a2a; }
-  .lb-head span { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #555; text-transform: uppercase; }
+  .lb-wrap { background: #111; border: 1px solid #1e1e1e; border-radius: 4px; overflow: hidden; margin-bottom: 28px; }
+  .lb-head { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 10px 16px; background: #161616; border-bottom: 1px solid #222; }
+  .lb-head span { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #444; text-transform: uppercase; }
   .lb-head span:nth-child(3), .lb-head span:last-child { text-align: right; }
 
-  .row { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 14px 16px; align-items: center; border-bottom: 1px solid #1a1a1a; transition: background 0.15s; cursor: default; }
+  .row { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 14px 16px; align-items: center; border-bottom: 1px solid #1a1a1a; transition: background 0.15s; }
   .row:last-child { border-bottom: none; }
   .row:hover { background: #161616; }
-  .row.r1 { background: linear-gradient(90deg, rgba(201,162,39,0.08) 0%, transparent 60%); border-left: 3px solid #c9a227; }
-  .row.r2 { background: linear-gradient(90deg, rgba(180,190,210,0.05) 0%, transparent 60%); border-left: 3px solid #8a9bb5; }
-  .row.r3 { background: linear-gradient(90deg, rgba(160,112,74,0.06) 0%, transparent 60%); border-left: 3px solid #a0704a; }
-  .row.r1:hover { background: linear-gradient(90deg, rgba(201,162,39,0.14) 0%, transparent 60%); }
+  .row.r1 { background: linear-gradient(90deg, rgba(223,89,40,0.1) 0%, transparent 60%); border-left: 3px solid #df5928; }
+  .row.r2 { background: linear-gradient(90deg, rgba(130,41,36,0.08) 0%, transparent 60%); border-left: 3px solid #822924; }
+  .row.r3 { background: linear-gradient(90deg, rgba(180,100,60,0.06) 0%, transparent 60%); border-left: 3px solid #b46040; }
+  .row.r1:hover { background: linear-gradient(90deg, rgba(223,89,40,0.16) 0%, transparent 60%); }
 
   .rank-col { text-align: center; }
   .rank-num { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; color: #333; }
-  .rank-num.gold { color: #c9a227; }
-  .rank-num.silver { color: #8a9bb5; }
-  .rank-num.bronze { color: #a0704a; }
   .medal { font-size: 22px; }
 
   .name-col { padding: 0 12px; }
   .fname { font-family: 'Oswald', sans-serif; font-size: 17px; font-weight: 600; color: #fff; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
   .bar-wrap { height: 3px; background: #222; border-radius: 2px; }
-  .bar { height: 3px; border-radius: 2px; background: linear-gradient(90deg, #c9a227, #e8c84a); transition: width 0.6s ease; }
-  .row.r2 .bar { background: linear-gradient(90deg, #8a9bb5, #b0c0d5); }
-  .row.r3 .bar { background: linear-gradient(90deg, #a0704a, #c08060); }
+  .bar { height: 3px; border-radius: 2px; background: linear-gradient(90deg, #df5928, #822924); transition: width 0.6s ease; }
 
   .score-col { text-align: right; font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; color: #fff; }
   .change-col { text-align: right; }
   .change-pill { display: inline-block; font-size: 12px; font-weight: 700; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 3px; }
-  .change-pill.up { background: rgba(90,200,90,0.15); color: #5ac85a; }
+  .change-pill.up { background: rgba(223,89,40,0.15); color: #df5928; }
   .change-pill.zero { background: rgba(255,255,255,0.05); color: #444; }
-  .change-pill.down { background: rgba(200,90,90,0.15); color: #c85a5a; }
-
-  /* STATS BAR */
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
-  .stat { background: #111; border: 1px solid #222; border-radius: 4px; padding: 16px; text-align: center; }
-  .stat-val { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: #c9a227; }
-  .stat-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .change-pill.down { background: rgba(130,41,36,0.2); color: #822924; }
 
   .footer { text-align: center; font-size: 11px; color: #333; padding: 20px 0; letter-spacing: 1px; text-transform: uppercase; }
   .loading { text-align: center; padding: 48px; color: #333; font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; }
-  .err { color: #c85a5a; }
+  .err { color: #df5928; }
 </style>
 </head>
 <body>
@@ -90,7 +83,75 @@
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">Autumn Lake Healthcare</div>
-    <div class="hero-title"><span>Autumn Lake</span> Madness</div>
+    <div class="hoop-wrap">
+      <!-- Basketball Hoop SVG -->
+      <svg class="hoop-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Backboard -->
+        <rect x="35" y="4" width="30" height="20" rx="2" fill="#1a1a1a" stroke="#df5928" stroke-width="2.5"/>
+        <!-- Inner box on backboard -->
+        <rect x="41" y="8" width="18" height="11" rx="1" fill="none" stroke="#df5928" stroke-width="1.5"/>
+        <!-- Pole -->
+        <rect x="48" y="24" width="4" height="8" fill="#df5928"/>
+        <!-- Rim left arm -->
+        <rect x="28" y="30" width="22" height="3" rx="1.5" fill="#822924"/>
+        <!-- Rim right arm -->
+        <rect x="50" y="30" width="22" height="3" rx="1.5" fill="#822924"/>
+        <!-- Rim circle -->
+        <circle cx="50" cy="31.5" r="22" stroke="#df5928" stroke-width="3" fill="none" stroke-dasharray="0 44 69 1000" stroke-dashoffset="0"/>
+        <!-- Actual rim oval front -->
+        <ellipse cx="50" cy="32" rx="19" ry="4" stroke="#df5928" stroke-width="2.5" fill="none"/>
+        <!-- Net lines -->
+        <line x1="34" y1="36" x2="38" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="39" y1="36" x2="41" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="44" y1="36" x2="44" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="49" y1="36" x2="47" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="54" y1="36" x2="53" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="59" y1="36" x2="56" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="64" y1="36" x2="62" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <!-- Net bottom -->
+        <path d="M38 58 Q44 62 47 58 Q50 62 53 58 Q56 62 62 58" stroke="#df5928" stroke-width="1" fill="none" opacity="0.6"/>
+        <!-- Basketball -->
+        <circle cx="50" cy="78" r="14" fill="url(#ballGrad)" />
+        <path d="M37 78 Q44 70 50 78 Q56 86 63 78" stroke="#5a1510" stroke-width="1.2" fill="none"/>
+        <path d="M50 64 Q58 71 50 78 Q42 85 50 92" stroke="#5a1510" stroke-width="1.2" fill="none"/>
+        <line x1="50" y1="64" x2="50" y2="92" stroke="#5a1510" stroke-width="1.2"/>
+        <line x1="36" y1="78" x2="64" y2="78" stroke="#5a1510" stroke-width="1.2"/>
+        <defs>
+          <radialGradient id="ballGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f07040"/>
+            <stop offset="100%" stop-color="#822924"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <div class="hero-title"><span>Autumn Lake</span><br>Madness</div>
+      <svg class="hoop-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+        <rect x="35" y="4" width="30" height="20" rx="2" fill="#1a1a1a" stroke="#df5928" stroke-width="2.5"/>
+        <rect x="41" y="8" width="18" height="11" rx="1" fill="none" stroke="#df5928" stroke-width="1.5"/>
+        <rect x="48" y="24" width="4" height="8" fill="#df5928"/>
+        <rect x="28" y="30" width="22" height="3" rx="1.5" fill="#822924"/>
+        <rect x="50" y="30" width="22" height="3" rx="1.5" fill="#822924"/>
+        <ellipse cx="50" cy="32" rx="19" ry="4" stroke="#df5928" stroke-width="2.5" fill="none"/>
+        <line x1="34" y1="36" x2="38" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="39" y1="36" x2="41" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="44" y1="36" x2="44" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="49" y1="36" x2="47" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="54" y1="36" x2="53" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="59" y1="36" x2="56" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <line x1="64" y1="36" x2="62" y2="58" stroke="#df5928" stroke-width="1" opacity="0.6"/>
+        <path d="M38 58 Q44 62 47 58 Q50 62 53 58 Q56 62 62 58" stroke="#df5928" stroke-width="1" fill="none" opacity="0.6"/>
+        <circle cx="50" cy="78" r="14" fill="url(#ballGrad2)" />
+        <path d="M37 78 Q44 70 50 78 Q56 86 63 78" stroke="#5a1510" stroke-width="1.2" fill="none"/>
+        <path d="M50 64 Q58 71 50 78 Q42 85 50 92" stroke="#5a1510" stroke-width="1.2" fill="none"/>
+        <line x1="50" y1="64" x2="50" y2="92" stroke="#5a1510" stroke-width="1.2"/>
+        <line x1="36" y1="78" x2="64" y2="78" stroke="#5a1510" stroke-width="1.2"/>
+        <defs>
+          <radialGradient id="ballGrad2" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f07040"/>
+            <stop offset="100%" stop-color="#822924"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
     <div class="hero-sub">10-Day Facebook Follower Challenge</div>
     <div class="hero-badges">
       <div class="badge live"><span class="live-dot"></span>Live</div>
@@ -101,7 +162,7 @@
 </div>
 
 <div class="ticker">
-  <span class="ticker-inner" id="tickerText">🏆 AUTUMN LAKE MADNESS &nbsp;·&nbsp; 10-DAY FOLLOWER CHALLENGE &nbsp;·&nbsp; WHO WILL TAKE THE CROWN? &nbsp;·&nbsp; FOLLOW YOUR FACILITY &nbsp;·&nbsp; 🏆 AUTUMN LAKE MADNESS &nbsp;·&nbsp; 10-DAY FOLLOWER CHALLENGE &nbsp;·&nbsp; WHO WILL TAKE THE CROWN?</span>
+  <span class="ticker-inner" id="tickerText">🏀 AUTUMN LAKE MADNESS &nbsp;·&nbsp; 10-DAY FOLLOWER CHALLENGE &nbsp;·&nbsp; WHO WILL TAKE THE CROWN? &nbsp;·&nbsp; FOLLOW YOUR FACILITY &nbsp;·&nbsp; 🏀 AUTUMN LAKE MADNESS &nbsp;·&nbsp; 10-DAY FOLLOWER CHALLENGE</span>
 </div>
 
 <div class="main">
@@ -112,7 +173,7 @@
   </div>
 
   <div class="section-head">
-    <h2>Standings</h2>
+    <h2>🏀 Standings</h2>
     <div class="section-line"></div>
     <div class="section-tag">Live Rankings</div>
   </div>
@@ -151,9 +212,8 @@
       document.getElementById('statLeader').textContent = sorted[0]?.facility_name?.split(' ').slice(-1)[0] || '—';
       document.getElementById('statDaysLeft').textContent = daysLeft;
 
-      // Update ticker with real names
       const names = sorted.map((r,i) => `#${i+1} ${r.facility_name.toUpperCase()}: ${r.new_followers} FOLLOWERS`).join(' &nbsp;·&nbsp; ');
-      document.getElementById('tickerText').innerHTML = `🏆 ${names} &nbsp;·&nbsp; 🏆 ${names}`;
+      document.getElementById('tickerText').innerHTML = `🏀 ${names} &nbsp;·&nbsp; 🏀 ${names}`;
 
       const rankClass = ['r1','r2','r3'];
       const medals = ['🥇','🥈','🥉'];
