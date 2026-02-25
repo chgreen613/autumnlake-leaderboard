@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autumn Lake | Follower Challenge</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f5f3; min-height: 100vh; padding: 24px 16px; color: #1a1a1a; }
+  .container { max-width: 680px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 24px; }
+  .logo { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #8a6a2a; text-transform: uppercase; margin-bottom: 6px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #666; }
+  .day-badge { display: inline-block; background: #2d5a27; color: white; font-size: 13px; font-weight: 600; padding: 5px 16px; border-radius: 20px; margin-top: 10px; }
+  .live-dot { display: inline-block; width: 8px; height: 8px; background: #5a9a52; border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+  .updated { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 14px; min-height: 18px; }
+  .leaderboard { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+  .lb-header { display: grid; grid-template-columns: 44px 1fr 110px 80px; padding: 12px 20px; background: #f9f6f0; border-bottom: 1px solid #ede8de; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #999; text-transform: uppercase; }
+  .lb-header span:last-child, .lb-header span:nth-child(3) { text-align: right; }
+  .facility-row { display: grid; grid-template-columns: 44px 1fr 110px 80px; padding: 14px 20px; align-items: center; border-bottom: 1px solid #f0ede8; }
+  .facility-row:last-child { border-bottom: none; }
+  .facility-row.top1 { background: #fffbf0; }
+  .facility-row.top2 { background: #fafcff; }
+  .facility-row.top3 { background: #f9fdf7; }
+  .rank { font-size: 15px; font-weight: 700; color: #bbb; width: 28px; text-align: center; }
+  .rank.r1 { color: #c9a227; font-size: 18px; }
+  .rank.r2 { color: #8a9bb5; font-size: 18px; }
+  .rank.r3 { color: #a0704a; font-size: 18px; }
+  .facility-info { padding-right: 12px; }
+  .facility-name { font-size: 15px; font-weight: 600; }
+  .progress-wrap { height: 5px; background: #f0ede8; border-radius: 10px; margin-top: 6px; }
+  .progress-bar { height: 5px; border-radius: 10px; background: linear-gradient(90deg,#2d5a27,#5a9a52); transition: width 0.5s; }
+  .followers { text-align: right; font-size: 18px; font-weight: 700; }
+  .change { text-align: right; font-size: 13px; font-weight: 600; color: #5a9a52; }
+  .change.zero { color: #bbb; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab { flex: 1; padding: 10px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: #fff; color: #888; box-shadow: 0 1px 4px rgba(0,0,0,0.08); transition: all 0.15s; }
+  .tab.active { background: #2d5a27; color: white; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .edit-panel { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+  .edit-panel h2 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .edit-panel p { font-size: 13px; color: #888; margin-bottom: 16px; }
+  .day-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+  .day-row label { font-size: 14px; font-weight: 600; }
+  .day-row select { padding: 7px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; }
+  .input-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .input-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; align-items: center; }
+  .input-row label { font-size: 14px; font-weight: 500; }
+  .input-row input[type=number] { padding: 8px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: right; outline: none; width: 100%; }
+  .input-row input:focus { border-color: #2d5a27; }
+  .name-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .name-row { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: center; }
+  .name-row span { font-size: 13px; color: #aaa; font-weight: 700; text-align: right; }
+  .name-row input[type=text] { padding: 8px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; width: 100%; }
+  .name-row input:focus { border-color: #2d5a27; }
+  .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .btn-primary { background: #2d5a27; color: white; }
+  .btn-primary:hover { background: #245020; }
+  .btn-ghost { background: #f5f5f3; color: #555; }
+  .btn-ghost:hover { background: #ede8de; }
+  .btn-row { display: flex; gap: 10px; }
+  .status-msg { font-size: 13px; color: #5a9a52; font-weight: 600; min-height: 20px; margin-top: 10px; }
+  .pw-wrap { margin-bottom: 16px; }
+  .pw-wrap label { font-size: 14px; font-weight: 600; display: block; margin-bottom: 6px; }
+  .pw-wrap input { padding: 8px 12px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; width: 200px; margin-right: 8px; }
+  .pw-wrap input:focus { border-color: #2d5a27; }
+  .pw-err { color: #c0392b; font-size: 13px; margin-top: 6px; }
+  .locked { opacity: 0.4; pointer-events: none; }
+  .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 8px; }
+  .loading { text-align: center; padding: 40px; color: #bbb; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">Autumn Lake Healthcare</div>
+    <h1>Follower Challenge 🏆</h1>
+    <div class="subtitle">10-Day Facebook Competition</div>
+    <div class="day-badge" id="dayBadge">Day — of 10</div>
+  </div>
+
+  <div class="updated" id="updatedAt"><span class="live-dot"></span>Loading...</div>
+  <div class="leaderboard" id="leaderboard"><div class="loading">Fetching scores...</div></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('view')">📊 Leaderboard</button>
+    <button class="tab" onclick="switchTab('edit')">✏️ Update Scores</button>
+    <button class="tab" onclick="switchTab('settings')">⚙️ Settings</button>
+  </div>
+
+  <div id="panel-view" class="panel active"></div>
+
+  <div id="panel-edit" class="panel">
+    <div class="edit-panel">
+      <h2>Update Scores</h2>
+      <p>Enter each facility's <strong>total</strong> new followers since Day 1, then Save & Publish.</p>
+      <div class="pw-wrap">
+        <label>Admin Password</label>
+        <input type="password" id="pwEdit" placeholder="Enter password">
+        <button class="btn btn-ghost" onclick="unlockEdit()">Unlock</button>
+        <div class="pw-err" id="pwErrEdit"></div>
+      </div>
+      <div id="editForm" class="locked">
+        <div class="day-row">
+          <label>Current Day:</label>
+          <select id="daySelect">
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+          </select>
+        </div>
+        <div class="input-rows" id="inputRows"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveScores()">💾 Save & Publish</button>
+          <button class="btn btn-ghost" onclick="resetAll()">Reset All to Zero</button>
+        </div>
+        <div class="status-msg" id="statusEdit"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-settings" class="panel">
+    <div class="edit-panel">
+      <h2>Facility Names</h2>
+      <p>Rename all 10 facilities to match your actual locations.</p>
+      <div class="pw-wrap">
+        <label>Admin Password</label>
+        <input type="password" id="pwSettings" placeholder="Enter password">
+        <button class="btn btn-ghost" onclick="unlockSettings()">Unlock</button>
+        <div class="pw-err" id="pwErrSettings"></div>
+      </div>
+      <div id="settingsForm" class="locked">
+        <div class="name-rows" id="nameRows"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveNames()">💾 Save Names</button>
+        </div>
+        <div class="status-msg" id="statusSettings"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Autumn Lake Healthcare · Live Leaderboard</div>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://weshcdumagibvoxnwstn.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc2hjZHVtYWdpYnZveG53c3RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDM1NTEsImV4cCI6MjA4NzYxOTU1MX0.rLBG_vDhd2ClVQSmHm-FgsIaOPZWZOImNEdn-tfwsyo";
+  const ADMIN_PW = "autumnlake2025";
+  const HEADERS = { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY };
+
+  let rows = [];
+  let editUnlocked = false;
+  let settingsUnlocked = false;
+
+  async function fetchScores() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?order=id.asc`, { headers: HEADERS });
+    rows = await res.json();
+    renderLeaderboard();
+    renderInputRows();
+    renderNameRows();
+  }
+
+  function renderLeaderboard() {
+    if (!rows.length) return;
+    const sorted = [...rows].sort((a, b) => b.new_followers - a.new_followers);
+    const max = Math.max(...sorted.map(r => r.new_followers), 1);
+    const medals = ['🥇','🥈','🥉'];
+    const day = rows[0]?.day || 1;
+    document.getElementById('dayBadge').textContent = `Day ${day} of 10`;
+    document.getElementById('updatedAt').innerHTML = `<span class="live-dot"></span>Live · auto-refreshes every 60s`;
+
+    document.getElementById('leaderboard').innerHTML = `
+      <div class="lb-header">
+        <span>#</span><span>Facility</span><span>New Followers</span><span>Change</span>
+      </div>
+      ${sorted.map((r, i) => {
+        const change = r.new_followers - r.previous_followers;
+        return `
+        <div class="facility-row ${i < 3 ? 'top'+(i+1) : ''}">
+          <div class="rank ${i < 3 ? 'r'+(i+1) : ''}">${i < 3 ? medals[i] : i+1}</div>
+          <div class="facility-info">
+            <div class="facility-name">${r.facility_name}</div>
+            <div class="progress-wrap"><div class="progress-bar" style="width:${Math.round((r.new_followers/max)*100)}%"></div></div>
+          </div>
+          <div class="followers">${r.new_followers.toLocaleString()}</div>
+          <div class="change ${change===0?'zero':''}">${change > 0 ? '+'+change : change < 0 ? change : '—'}</div>
+        </div>`;
+      }).join('')}
+    `;
+  }
+
+  function renderInputRows() {
+    document.getElementById('inputRows').innerHTML = rows.map(r => `
+      <div class="input-row">
+        <label>${r.facility_name}</label>
+        <input type="number" id="score_${r.id}" min="0" value="${r.new_followers}">
+      </div>
+    `).join('');
+    const day = rows[0]?.day || 1;
+    document.getElementById('daySelect').value = day;
+  }
+
+  function renderNameRows() {
+    document.getElementById('nameRows').innerHTML = rows.map((r, i) => `
+      <div class="name-row">
+        <span>${i+1}</span>
+        <input type="text" id="name_${r.id}" value="${r.facility_name}" placeholder="Facility ${i+1}">
+      </div>
+    `).join('');
+  }
+
+  async function saveScores() {
+    const day = parseInt(document.getElementById('daySelect').value);
+    const msg = document.getElementById('statusEdit');
+    msg.textContent = 'Saving...';
+    try {
+      for (const r of rows) {
+        const newVal = parseInt(document.getElementById('score_'+r.id)?.value) || 0;
+        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
+          method: 'PATCH',
+          headers: HEADERS,
+          body: JSON.stringify({ new_followers: newVal, previous_followers: r.new_followers, day })
+        });
+      }
+      msg.textContent = '✅ Published! Everyone can see the updated scores.';
+      fetchScores();
+    } catch(e) {
+      msg.textContent = '❌ Error saving. Check your connection.';
+    }
+  }
+
+  async function saveNames() {
+    const msg = document.getElementById('statusSettings');
+    msg.textContent = 'Saving...';
+    try {
+      for (const r of rows) {
+        const name = document.getElementById('name_'+r.id)?.value.trim() || r.facility_name;
+        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
+          method: 'PATCH',
+          headers: HEADERS,
+          body: JSON.stringify({ facility_name: name })
+        });
+      }
+      msg.textContent = '✅ Names saved!';
+      fetchScores();
+    } catch(e) {
+      msg.textContent = '❌ Error saving names.';
+    }
+  }
+
+  async function resetAll() {
+    if (!confirm('Reset ALL scores to zero?')) return;
+    const msg = document.getElementById('statusEdit');
+    msg.textContent = 'Resetting...';
+    for (const r of rows) {
+      await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
+        method: 'PATCH', headers: HEADERS,
+        body: JSON.stringify({ new_followers: 0, previous_followers: 0, day: 1 })
+      });
+    }
+    msg.textContent = '✅ Reset complete.';
+    fetchScores();
+  }
+
+  function unlockEdit() {
+    if (document.getElementById('pwEdit').value === ADMIN_PW) {
+      document.getElementById('editForm').classList.remove('locked');
+      document.getElementById('pwErrEdit').textContent = '';
+      editUnlocked = true;
+    } else {
+      document.getElementById('pwErrEdit').textContent = 'Incorrect password.';
+    }
+  }
+
+  function unlockSettings() {
+    if (document.getElementById('pwSettings').value === ADMIN_PW) {
+      document.getElementById('settingsForm').classList.remove('locked');
+      document.getElementById('pwErrSettings').textContent = '';
+      settingsUnlocked = true;
+    } else {
+      document.getElementById('pwErrSettings').textContent = 'Incorrect password.';
+    }
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['view','edit','settings'][i] === tab));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-'+tab).classList.add('active');
+  }
+
+  // Auto-refresh every 60 seconds
+  setInterval(fetchScores, 60000);
+  fetchScores();
+</script>
+</body>
+</html>
