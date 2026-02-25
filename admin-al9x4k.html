@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autumn Lake | Admin</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f5f3; min-height: 100vh; padding: 24px 16px; color: #1a1a1a; }
+  .container { max-width: 680px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 24px; }
+  .logo { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #8a6a2a; text-transform: uppercase; margin-bottom: 6px; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #666; }
+  .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
+  .card h2 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .card p { font-size: 13px; color: #888; margin-bottom: 18px; }
+  .day-row { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
+  .day-row label { font-size: 14px; font-weight: 600; }
+  .day-row select { padding: 8px 12px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; }
+  .input-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .input-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; align-items: center; }
+  .input-row label { font-size: 14px; font-weight: 500; }
+  .input-row input[type=number] { padding: 8px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: right; outline: none; width: 100%; }
+  .input-row input:focus { border-color: #2d5a27; }
+  .name-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .name-row { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: center; }
+  .name-row span { font-size: 13px; color: #aaa; font-weight: 700; text-align: right; }
+  .name-row input[type=text] { padding: 8px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; width: 100%; }
+  .name-row input:focus { border-color: #2d5a27; }
+  .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .btn-primary { background: #2d5a27; color: white; }
+  .btn-primary:hover { background: #245020; }
+  .btn-danger { background: #c0392b; color: white; }
+  .btn-danger:hover { background: #a93226; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .status { font-size: 13px; font-weight: 600; min-height: 20px; margin-top: 12px; color: #5a9a52; }
+  .view-link { display: inline-block; margin-top: 6px; font-size: 13px; color: #2d5a27; font-weight: 600; text-decoration: none; }
+  .view-link:hover { text-decoration: underline; }
+  .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 8px; }
+  .loading { text-align: center; padding: 20px; color: #bbb; font-size: 14px; }
+  .warning { background: #fff8e1; border: 1px solid #ffe082; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #7a5c00; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">Autumn Lake Healthcare</div>
+    <h1>🔧 Admin Panel</h1>
+    <div class="subtitle">Leaderboard Management</div>
+    <a class="view-link" href="/" target="_blank">↗ View public leaderboard</a>
+  </div>
+
+  <div class="warning">⚠️ Keep this URL private — anyone with the link can edit scores.</div>
+
+  <div class="card">
+    <h2>Update Scores</h2>
+    <p>Enter each facility's <strong>total</strong> new followers since Day 1, then Save & Publish.</p>
+    <div id="loadingScores" class="loading">Loading current scores...</div>
+    <div id="editForm" style="display:none">
+      <div class="day-row">
+        <label>Current Day:</label>
+        <select id="daySelect">
+          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+      </div>
+      <div class="input-rows" id="inputRows"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveScores()">💾 Save & Publish</button>
+        <button class="btn btn-danger" onclick="resetAll()">Reset All to Zero</button>
+      </div>
+      <div class="status" id="statusScores"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Facility Names</h2>
+    <p>Edit the names of all 10 facilities.</p>
+    <div class="name-rows" id="nameRows"><div class="loading">Loading...</div></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveNames()">💾 Save Names</button>
+    </div>
+    <div class="status" id="statusNames"></div>
+  </div>
+
+  <div class="footer">Autumn Lake Healthcare · Admin · Keep this URL private</div>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://weshcdumagibvoxnwstn.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc2hjZHVtYWdpYnZveG53c3RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDM1NTEsImV4cCI6MjA4NzYxOTU1MX0.rLBG_vDhd2ClVQSmHm-FgsIaOPZWZOImNEdn-tfwsyo";
+  const HEADERS = { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY };
+
+  let rows = [];
+
+  async function loadData() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?order=id.asc`, { headers: HEADERS });
+    rows = await res.json();
+    document.getElementById('loadingScores').style.display = 'none';
+    document.getElementById('editForm').style.display = 'block';
+    document.getElementById('daySelect').value = rows[0]?.day || 1;
+    document.getElementById('inputRows').innerHTML = rows.map(r => `
+      <div class="input-row">
+        <label>${r.facility_name}</label>
+        <input type="number" id="score_${r.id}" min="0" value="${r.new_followers}">
+      </div>`).join('');
+    document.getElementById('nameRows').innerHTML = rows.map((r, i) => `
+      <div class="name-row">
+        <span>${i+1}</span>
+        <input type="text" id="name_${r.id}" value="${r.facility_name}" placeholder="Facility ${i+1}">
+      </div>`).join('');
+  }
+
+  async function saveScores() {
+    const day = parseInt(document.getElementById('daySelect').value);
+    const msg = document.getElementById('statusScores');
+    msg.textContent = 'Saving...';
+    try {
+      for (const r of rows) {
+        const newVal = parseInt(document.getElementById('score_'+r.id)?.value) || 0;
+        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
+          method: 'PATCH', headers: HEADERS,
+          body: JSON.stringify({ new_followers: newVal, previous_followers: r.new_followers, day })
+        });
+      }
+      msg.textContent = '✅ Published! Public leaderboard is now updated.';
+      loadData();
+    } catch(e) { msg.textContent = '❌ Error saving. Try again.'; }
+  }
+
+  async function saveNames() {
+    const msg = document.getElementById('statusNames');
+    msg.textContent = 'Saving...';
+    try {
+      for (const r of rows) {
+        const name = document.getElementById('name_'+r.id)?.value.trim() || r.facility_name;
+        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
+          method: 'PATCH', headers: HEADERS,
+          body: JSON.stringify({ facility_name: name })
+        });
+      }
+      msg.textContent = '✅ Names saved!';
+      loadData();
+    } catch(e) { msg.textContent = '❌ Error saving names.'; }
+  }
+
+  async function resetAll() {
+    if (!confirm('Reset ALL scores to zero? This cannot be undone.')) return;
+    const msg = document.getElementById('statusScores');
+    msg.textContent = 'Resetting...';
+    for (const r of rows) {
+      await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
+        method: 'PATCH', headers: HEADERS,
+        body: JSON.stringify({ new_followers: 0, previous_followers: 0, day: 1 })
+      });
+    }
+    msg.textContent = '✅ Reset complete.';
+    loadData();
+  }
+
+  loadData();
+</script>
+</body>
+</html>
