@@ -3,294 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Autumn Lake | Follower Challenge</title>
+<title>Autumn Lake Madness</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: #f5f5f3; min-height: 100vh; padding: 24px 16px; color: #1a1a1a; }
-  .container { max-width: 680px; margin: 0 auto; }
-  .header { text-align: center; margin-bottom: 24px; }
-  .logo { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #8a6a2a; text-transform: uppercase; margin-bottom: 6px; }
-  h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
-  .subtitle { font-size: 14px; color: #666; }
-  .day-badge { display: inline-block; background: #2d5a27; color: white; font-size: 13px; font-weight: 600; padding: 5px 16px; border-radius: 20px; margin-top: 10px; }
-  .live-dot { display: inline-block; width: 8px; height: 8px; background: #5a9a52; border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
-  .updated { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 14px; min-height: 18px; }
-  .leaderboard { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
-  .lb-header { display: grid; grid-template-columns: 44px 1fr 110px 80px; padding: 12px 20px; background: #f9f6f0; border-bottom: 1px solid #ede8de; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #999; text-transform: uppercase; }
-  .lb-header span:last-child, .lb-header span:nth-child(3) { text-align: right; }
-  .facility-row { display: grid; grid-template-columns: 44px 1fr 110px 80px; padding: 14px 20px; align-items: center; border-bottom: 1px solid #f0ede8; }
-  .facility-row:last-child { border-bottom: none; }
-  .facility-row.top1 { background: #fffbf0; }
-  .facility-row.top2 { background: #fafcff; }
-  .facility-row.top3 { background: #f9fdf7; }
-  .rank { font-size: 15px; font-weight: 700; color: #bbb; width: 28px; text-align: center; }
-  .rank.r1 { color: #c9a227; font-size: 18px; }
-  .rank.r2 { color: #8a9bb5; font-size: 18px; }
-  .rank.r3 { color: #a0704a; font-size: 18px; }
-  .facility-info { padding-right: 12px; }
-  .facility-name { font-size: 15px; font-weight: 600; }
-  .progress-wrap { height: 5px; background: #f0ede8; border-radius: 10px; margin-top: 6px; }
-  .progress-bar { height: 5px; border-radius: 10px; background: linear-gradient(90deg,#2d5a27,#5a9a52); transition: width 0.5s; }
-  .followers { text-align: right; font-size: 18px; font-weight: 700; }
-  .change { text-align: right; font-size: 13px; font-weight: 600; color: #5a9a52; }
-  .change.zero { color: #bbb; }
-  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-  .tab { flex: 1; padding: 10px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: #fff; color: #888; box-shadow: 0 1px 4px rgba(0,0,0,0.08); transition: all 0.15s; }
-  .tab.active { background: #2d5a27; color: white; }
-  .panel { display: none; }
-  .panel.active { display: block; }
-  .edit-panel { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
-  .edit-panel h2 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  .edit-panel p { font-size: 13px; color: #888; margin-bottom: 16px; }
-  .day-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
-  .day-row label { font-size: 14px; font-weight: 600; }
-  .day-row select { padding: 7px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; }
-  .input-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-  .input-row { display: grid; grid-template-columns: 1fr 110px; gap: 8px; align-items: center; }
-  .input-row label { font-size: 14px; font-weight: 500; }
-  .input-row input[type=number] { padding: 8px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: right; outline: none; width: 100%; }
-  .input-row input:focus { border-color: #2d5a27; }
-  .name-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-  .name-row { display: grid; grid-template-columns: 24px 1fr; gap: 10px; align-items: center; }
-  .name-row span { font-size: 13px; color: #aaa; font-weight: 700; text-align: right; }
-  .name-row input[type=text] { padding: 8px 10px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; width: 100%; }
-  .name-row input:focus { border-color: #2d5a27; }
-  .btn { padding: 10px 22px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-  .btn-primary { background: #2d5a27; color: white; }
-  .btn-primary:hover { background: #245020; }
-  .btn-ghost { background: #f5f5f3; color: #555; }
-  .btn-ghost:hover { background: #ede8de; }
-  .btn-row { display: flex; gap: 10px; }
-  .status-msg { font-size: 13px; color: #5a9a52; font-weight: 600; min-height: 20px; margin-top: 10px; }
-  .pw-wrap { margin-bottom: 16px; }
-  .pw-wrap label { font-size: 14px; font-weight: 600; display: block; margin-bottom: 6px; }
-  .pw-wrap input { padding: 8px 12px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 14px; outline: none; width: 200px; margin-right: 8px; }
-  .pw-wrap input:focus { border-color: #2d5a27; }
-  .pw-err { color: #c0392b; font-size: 13px; margin-top: 6px; }
-  .locked { opacity: 0.4; pointer-events: none; }
-  .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 8px; }
-  .loading { text-align: center; padding: 40px; color: #bbb; font-size: 14px; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; min-height: 100vh; color: #fff; }
+
+  /* HEADER */
+  .hero { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a0a 50%, #0a1a0a 100%); border-bottom: 3px solid #c9a227; padding: 28px 20px 20px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,162,39,0.12) 0%, transparent 70%); }
+  .hero-inner { position: relative; z-index: 1; }
+  .hero-eyebrow { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 4px; color: #c9a227; text-transform: uppercase; margin-bottom: 8px; }
+  .hero-title { font-family: 'Oswald', sans-serif; font-size: clamp(36px, 8vw, 64px); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; line-height: 1; color: #fff; text-shadow: 0 0 40px rgba(201,162,39,0.3); margin-bottom: 6px; }
+  .hero-title span { color: #c9a227; }
+  .hero-sub { font-size: 13px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+  .hero-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: #aaa; font-weight: 600; letter-spacing: 0.5px; }
+  .badge.live { border-color: rgba(90,200,90,0.4); color: #5ac85a; }
+  .live-dot { width: 7px; height: 7px; background: #5ac85a; border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.8)} }
+  .day-pill { background: #c9a227; color: #000; font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; padding: 6px 20px; border-radius: 4px; text-transform: uppercase; }
+
+  /* TICKER */
+  .ticker { background: #c9a227; padding: 7px 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-block; animation: ticker 25s linear infinite; font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; color: #000; letter-spacing: 1px; text-transform: uppercase; }
+  @keyframes ticker { from{transform:translateX(100vw)} to{transform:translateX(-100%)} }
+
+  /* MAIN */
+  .main { max-width: 760px; margin: 0 auto; padding: 24px 16px; }
+
+  /* SECTION HEADER */
+  .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .section-head h2 { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(90deg, #333, transparent); }
+  .section-tag { font-size: 11px; color: #c9a227; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* LEADERBOARD */
+  .lb-wrap { background: #111; border: 1px solid #222; border-radius: 4px; overflow: hidden; margin-bottom: 28px; }
+  .lb-head { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 10px 16px; background: #161616; border-bottom: 1px solid #2a2a2a; }
+  .lb-head span { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #555; text-transform: uppercase; }
+  .lb-head span:nth-child(3), .lb-head span:last-child { text-align: right; }
+
+  .row { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 14px 16px; align-items: center; border-bottom: 1px solid #1a1a1a; transition: background 0.15s; cursor: default; }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: #161616; }
+  .row.r1 { background: linear-gradient(90deg, rgba(201,162,39,0.08) 0%, transparent 60%); border-left: 3px solid #c9a227; }
+  .row.r2 { background: linear-gradient(90deg, rgba(180,190,210,0.05) 0%, transparent 60%); border-left: 3px solid #8a9bb5; }
+  .row.r3 { background: linear-gradient(90deg, rgba(160,112,74,0.06) 0%, transparent 60%); border-left: 3px solid #a0704a; }
+  .row.r1:hover { background: linear-gradient(90deg, rgba(201,162,39,0.14) 0%, transparent 60%); }
+
+  .rank-col { text-align: center; }
+  .rank-num { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; color: #333; }
+  .rank-num.gold { color: #c9a227; }
+  .rank-num.silver { color: #8a9bb5; }
+  .rank-num.bronze { color: #a0704a; }
+  .medal { font-size: 22px; }
+
+  .name-col { padding: 0 12px; }
+  .fname { font-family: 'Oswald', sans-serif; font-size: 17px; font-weight: 600; color: #fff; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .bar-wrap { height: 3px; background: #222; border-radius: 2px; }
+  .bar { height: 3px; border-radius: 2px; background: linear-gradient(90deg, #c9a227, #e8c84a); transition: width 0.6s ease; }
+  .row.r2 .bar { background: linear-gradient(90deg, #8a9bb5, #b0c0d5); }
+  .row.r3 .bar { background: linear-gradient(90deg, #a0704a, #c08060); }
+
+  .score-col { text-align: right; font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; color: #fff; }
+  .change-col { text-align: right; }
+  .change-pill { display: inline-block; font-size: 12px; font-weight: 700; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 3px; }
+  .change-pill.up { background: rgba(90,200,90,0.15); color: #5ac85a; }
+  .change-pill.zero { background: rgba(255,255,255,0.05); color: #444; }
+  .change-pill.down { background: rgba(200,90,90,0.15); color: #c85a5a; }
+
+  /* STATS BAR */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat { background: #111; border: 1px solid #222; border-radius: 4px; padding: 16px; text-align: center; }
+  .stat-val { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; color: #c9a227; }
+  .stat-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+  .footer { text-align: center; font-size: 11px; color: #333; padding: 20px 0; letter-spacing: 1px; text-transform: uppercase; }
+  .loading { text-align: center; padding: 48px; color: #333; font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; }
+  .err { color: #c85a5a; }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <div class="logo">Autumn Lake Healthcare</div>
-    <h1>Follower Challenge 🏆</h1>
-    <div class="subtitle">10-Day Facebook Competition</div>
-    <div class="day-badge" id="dayBadge">Day — of 10</div>
-  </div>
 
-  <div class="updated" id="updatedAt"><span class="live-dot"></span>Loading...</div>
-  <div class="leaderboard" id="leaderboard"><div class="loading">Fetching scores...</div></div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('view')">📊 Leaderboard</button>
-    <button class="tab" onclick="switchTab('edit')">✏️ Update Scores</button>
-    <button class="tab" onclick="switchTab('settings')">⚙️ Settings</button>
-  </div>
-
-  <div id="panel-view" class="panel active"></div>
-
-  <div id="panel-edit" class="panel">
-    <div class="edit-panel">
-      <h2>Update Scores</h2>
-      <p>Enter each facility's <strong>total</strong> new followers since Day 1, then Save & Publish.</p>
-      <div class="pw-wrap">
-        <label>Admin Password</label>
-        <input type="password" id="pwEdit" placeholder="Enter password">
-        <button class="btn btn-ghost" onclick="unlockEdit()">Unlock</button>
-        <div class="pw-err" id="pwErrEdit"></div>
-      </div>
-      <div id="editForm" class="locked">
-        <div class="day-row">
-          <label>Current Day:</label>
-          <select id="daySelect">
-            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-            <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-          </select>
-        </div>
-        <div class="input-rows" id="inputRows"></div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="saveScores()">💾 Save & Publish</button>
-          <button class="btn btn-ghost" onclick="resetAll()">Reset All to Zero</button>
-        </div>
-        <div class="status-msg" id="statusEdit"></div>
-      </div>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Autumn Lake Healthcare</div>
+    <div class="hero-title"><span>Autumn Lake</span> Madness</div>
+    <div class="hero-sub">10-Day Facebook Follower Challenge</div>
+    <div class="hero-badges">
+      <div class="badge live"><span class="live-dot"></span>Live</div>
+      <div class="day-pill" id="dayPill">Day — of 10</div>
+      <div class="badge" id="lastUpdate">Loading...</div>
     </div>
   </div>
-
-  <div id="panel-settings" class="panel">
-    <div class="edit-panel">
-      <h2>Facility Names</h2>
-      <p>Rename all 10 facilities to match your actual locations.</p>
-      <div class="pw-wrap">
-        <label>Admin Password</label>
-        <input type="password" id="pwSettings" placeholder="Enter password">
-        <button class="btn btn-ghost" onclick="unlockSettings()">Unlock</button>
-        <div class="pw-err" id="pwErrSettings"></div>
-      </div>
-      <div id="settingsForm" class="locked">
-        <div class="name-rows" id="nameRows"></div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="saveNames()">💾 Save Names</button>
-        </div>
-        <div class="status-msg" id="statusSettings"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">Autumn Lake Healthcare · Live Leaderboard</div>
 </div>
+
+<div class="ticker">
+  <span class="ticker-inner" id="tickerText">🏆 AUTUMN LAKE MADNESS &nbsp;·&nbsp; 10-DAY FOLLOWER CHALLENGE &nbsp;·&nbsp; WHO WILL TAKE THE CROWN? &nbsp;·&nbsp; FOLLOW YOUR FACILITY &nbsp;·&nbsp; 🏆 AUTUMN LAKE MADNESS &nbsp;·&nbsp; 10-DAY FOLLOWER CHALLENGE &nbsp;·&nbsp; WHO WILL TAKE THE CROWN?</span>
+</div>
+
+<div class="main">
+  <div class="stats" id="statsBar" style="display:none">
+    <div class="stat"><div class="stat-val" id="statTotal">0</div><div class="stat-label">Total New Followers</div></div>
+    <div class="stat"><div class="stat-val" id="statLeader">—</div><div class="stat-label">Current Leader</div></div>
+    <div class="stat"><div class="stat-val" id="statDaysLeft">—</div><div class="stat-label">Days Remaining</div></div>
+  </div>
+
+  <div class="section-head">
+    <h2>Standings</h2>
+    <div class="section-line"></div>
+    <div class="section-tag">Live Rankings</div>
+  </div>
+
+  <div class="lb-wrap">
+    <div class="lb-head">
+      <span>Rank</span><span>Facility</span><span>Followers</span><span>+/-</span>
+    </div>
+    <div id="leaderboard"><div class="loading">Loading Standings...</div></div>
+  </div>
+</div>
+
+<div class="footer">Autumn Lake Healthcare &nbsp;·&nbsp; Autumn Lake Madness &nbsp;·&nbsp; Auto-refreshes every 60s</div>
 
 <script>
   const SUPABASE_URL = "https://weshcdumagibvoxnwstn.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc2hjZHVtYWdpYnZveG53c3RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDM1NTEsImV4cCI6MjA4NzYxOTU1MX0.rLBG_vDhd2ClVQSmHm-FgsIaOPZWZOImNEdn-tfwsyo";
-  const ADMIN_PW = "autumnlake2025";
-  const HEADERS = { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY };
-
-  let rows = [];
-  let editUnlocked = false;
-  let settingsUnlocked = false;
+  const HEADERS = { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY };
 
   async function fetchScores() {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?order=id.asc`, { headers: HEADERS });
-    rows = await res.json();
-    renderLeaderboard();
-    renderInputRows();
-    renderNameRows();
-  }
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?order=id.asc`, { headers: HEADERS });
+      const rows = await res.json();
+      if (!Array.isArray(rows) || !rows.length) return;
 
-  function renderLeaderboard() {
-    if (!rows.length) return;
-    const sorted = [...rows].sort((a, b) => b.new_followers - a.new_followers);
-    const max = Math.max(...sorted.map(r => r.new_followers), 1);
-    const medals = ['🥇','🥈','🥉'];
-    const day = rows[0]?.day || 1;
-    document.getElementById('dayBadge').textContent = `Day ${day} of 10`;
-    document.getElementById('updatedAt').innerHTML = `<span class="live-dot"></span>Live · auto-refreshes every 60s`;
+      const sorted = [...rows].sort((a, b) => b.new_followers - a.new_followers);
+      const max = Math.max(...sorted.map(r => r.new_followers), 1);
+      const day = rows[0].day || 1;
+      const total = rows.reduce((s, r) => s + r.new_followers, 0);
+      const daysLeft = Math.max(0, 10 - day);
 
-    document.getElementById('leaderboard').innerHTML = `
-      <div class="lb-header">
-        <span>#</span><span>Facility</span><span>New Followers</span><span>Change</span>
-      </div>
-      ${sorted.map((r, i) => {
+      document.getElementById('dayPill').textContent = `Day ${day} of 10`;
+      document.getElementById('lastUpdate').textContent = `Updated ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;
+      document.getElementById('statsBar').style.display = 'grid';
+      document.getElementById('statTotal').textContent = total.toLocaleString();
+      document.getElementById('statLeader').textContent = sorted[0]?.facility_name?.split(' ').slice(-1)[0] || '—';
+      document.getElementById('statDaysLeft').textContent = daysLeft;
+
+      // Update ticker with real names
+      const names = sorted.map((r,i) => `#${i+1} ${r.facility_name.toUpperCase()}: ${r.new_followers} FOLLOWERS`).join(' &nbsp;·&nbsp; ');
+      document.getElementById('tickerText').innerHTML = `🏆 ${names} &nbsp;·&nbsp; 🏆 ${names}`;
+
+      const rankClass = ['r1','r2','r3'];
+      const medals = ['🥇','🥈','🥉'];
+
+      document.getElementById('leaderboard').innerHTML = sorted.map((r, i) => {
         const change = r.new_followers - r.previous_followers;
+        const pct = Math.round((r.new_followers / max) * 100);
+        const changeHtml = change > 0
+          ? `<span class="change-pill up">+${change}</span>`
+          : change < 0
+          ? `<span class="change-pill down">${change}</span>`
+          : `<span class="change-pill zero">—</span>`;
+        const rankHtml = i < 3
+          ? `<span class="medal">${medals[i]}</span>`
+          : `<span class="rank-num">${i+1}</span>`;
         return `
-        <div class="facility-row ${i < 3 ? 'top'+(i+1) : ''}">
-          <div class="rank ${i < 3 ? 'r'+(i+1) : ''}">${i < 3 ? medals[i] : i+1}</div>
-          <div class="facility-info">
-            <div class="facility-name">${r.facility_name}</div>
-            <div class="progress-wrap"><div class="progress-bar" style="width:${Math.round((r.new_followers/max)*100)}%"></div></div>
-          </div>
-          <div class="followers">${r.new_followers.toLocaleString()}</div>
-          <div class="change ${change===0?'zero':''}">${change > 0 ? '+'+change : change < 0 ? change : '—'}</div>
-        </div>`;
-      }).join('')}
-    `;
-  }
-
-  function renderInputRows() {
-    document.getElementById('inputRows').innerHTML = rows.map(r => `
-      <div class="input-row">
-        <label>${r.facility_name}</label>
-        <input type="number" id="score_${r.id}" min="0" value="${r.new_followers}">
-      </div>
-    `).join('');
-    const day = rows[0]?.day || 1;
-    document.getElementById('daySelect').value = day;
-  }
-
-  function renderNameRows() {
-    document.getElementById('nameRows').innerHTML = rows.map((r, i) => `
-      <div class="name-row">
-        <span>${i+1}</span>
-        <input type="text" id="name_${r.id}" value="${r.facility_name}" placeholder="Facility ${i+1}">
-      </div>
-    `).join('');
-  }
-
-  async function saveScores() {
-    const day = parseInt(document.getElementById('daySelect').value);
-    const msg = document.getElementById('statusEdit');
-    msg.textContent = 'Saving...';
-    try {
-      for (const r of rows) {
-        const newVal = parseInt(document.getElementById('score_'+r.id)?.value) || 0;
-        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
-          method: 'PATCH',
-          headers: HEADERS,
-          body: JSON.stringify({ new_followers: newVal, previous_followers: r.new_followers, day })
-        });
-      }
-      msg.textContent = '✅ Published! Everyone can see the updated scores.';
-      fetchScores();
+          <div class="row ${i < 3 ? rankClass[i] : ''}">
+            <div class="rank-col">${rankHtml}</div>
+            <div class="name-col">
+              <div class="fname">${r.facility_name}</div>
+              <div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div>
+            </div>
+            <div class="score-col">${r.new_followers.toLocaleString()}</div>
+            <div class="change-col">${changeHtml}</div>
+          </div>`;
+      }).join('');
     } catch(e) {
-      msg.textContent = '❌ Error saving. Check your connection.';
+      document.getElementById('leaderboard').innerHTML = '<div class="loading err">Error loading. Refreshing...</div>';
     }
   }
 
-  async function saveNames() {
-    const msg = document.getElementById('statusSettings');
-    msg.textContent = 'Saving...';
-    try {
-      for (const r of rows) {
-        const name = document.getElementById('name_'+r.id)?.value.trim() || r.facility_name;
-        await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
-          method: 'PATCH',
-          headers: HEADERS,
-          body: JSON.stringify({ facility_name: name })
-        });
-      }
-      msg.textContent = '✅ Names saved!';
-      fetchScores();
-    } catch(e) {
-      msg.textContent = '❌ Error saving names.';
-    }
-  }
-
-  async function resetAll() {
-    if (!confirm('Reset ALL scores to zero?')) return;
-    const msg = document.getElementById('statusEdit');
-    msg.textContent = 'Resetting...';
-    for (const r of rows) {
-      await fetch(`${SUPABASE_URL}/rest/v1/leaderboard?id=eq.${r.id}`, {
-        method: 'PATCH', headers: HEADERS,
-        body: JSON.stringify({ new_followers: 0, previous_followers: 0, day: 1 })
-      });
-    }
-    msg.textContent = '✅ Reset complete.';
-    fetchScores();
-  }
-
-  function unlockEdit() {
-    if (document.getElementById('pwEdit').value === ADMIN_PW) {
-      document.getElementById('editForm').classList.remove('locked');
-      document.getElementById('pwErrEdit').textContent = '';
-      editUnlocked = true;
-    } else {
-      document.getElementById('pwErrEdit').textContent = 'Incorrect password.';
-    }
-  }
-
-  function unlockSettings() {
-    if (document.getElementById('pwSettings').value === ADMIN_PW) {
-      document.getElementById('settingsForm').classList.remove('locked');
-      document.getElementById('pwErrSettings').textContent = '';
-      settingsUnlocked = true;
-    } else {
-      document.getElementById('pwErrSettings').textContent = 'Incorrect password.';
-    }
-  }
-
-  function switchTab(tab) {
-    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['view','edit','settings'][i] === tab));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('panel-'+tab).classList.add('active');
-  }
-
-  // Auto-refresh every 60 seconds
   setInterval(fetchScores, 60000);
   fetchScores();
 </script>
