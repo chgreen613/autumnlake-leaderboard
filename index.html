@@ -46,11 +46,11 @@
   .section-tag { font-size: 11px; color: #df5928; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
   .lb-wrap { background: #111; border: 1px solid #1e1e1e; border-radius: 4px; overflow: hidden; margin-bottom: 28px; }
-  .lb-head { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 10px 16px; background: #161616; border-bottom: 1px solid #222; }
+  .lb-head { display: grid; grid-template-columns: 52px 1fr 120px; padding: 10px 16px; background: #161616; border-bottom: 1px solid #222; }
   .lb-head span { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #444; text-transform: uppercase; }
   .lb-head span:nth-child(3), .lb-head span:last-child { text-align: right; }
 
-  .row { display: grid; grid-template-columns: 52px 1fr 100px 80px; padding: 14px 16px; align-items: center; border-bottom: 1px solid #1a1a1a; transition: background 0.15s; }
+  .row { display: grid; grid-template-columns: 52px 1fr 120px; padding: 14px 16px; align-items: center; border-bottom: 1px solid #1a1a1a; transition: background 0.15s; }
   .row:last-child { border-bottom: none; }
   .row:hover { background: #161616; }
   .row.r1 { background: linear-gradient(90deg, rgba(223,89,40,0.1) 0%, transparent 60%); border-left: 3px solid #df5928; }
@@ -179,7 +179,7 @@
 
   <div class="lb-wrap">
     <div class="lb-head">
-      <span>Rank</span><span>Facility</span><span>Followers</span><span>+/-</span>
+      <span>Rank</span><span>Facility</span><span>New Followers</span>
     </div>
     <div id="leaderboard"><div class="loading">Loading Standings...</div></div>
   </div>
@@ -238,7 +238,6 @@
               <div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div>
             </div>
             <div class="score-col">${r.new_followers.toLocaleString()}</div>
-            <div class="change-col">${changeHtml}</div>
           </div>`;
       }).join('');
     } catch(e) {
